@@ -1,0 +1,54 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "sourcename",
+            "otherEntityName": "source",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "appkey",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "title",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "content",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "target",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "addedtime",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "senttime",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "retries",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "state",
+            "fieldType": "State",
+            "fieldValues": "ADDED,FAILED,SUCCESSFUL"
+        }
+    ],
+    "changelogDate": "20180309035508",
+    "entityTableName": "message",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "skipClient": true,
+    "microserviceName": "sms"
+}
