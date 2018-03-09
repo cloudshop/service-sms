@@ -1,0 +1,45 @@
+/**
+ * 发送状态
+ * @author bobying.
+ */
+enum State {
+    ADDED, FAILED, SUCCESSFUL
+}
+
+entity Source {
+    appkey String
+    name String required minlength(1)  maxlength(20)
+    code String minlength(1)  maxlength(15) pattern(/^[a-zA-Z]+[a-zA-Z0-9_]*$/) 
+    desc TextBlob
+ }
+
+entity Message {
+    appkey String
+    title String
+    content String 
+    target String
+    added_time Instant
+    sent_time Instant
+    retries Integer
+    state State
+}
+
+relationship ManyToOne {
+    Message{source[name]} to Source
+}
+
+paginate Message with pagination
+
+microservice * with sms
+
+skipClient for *
+//skipServer for *
+
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceClass
+// Set an angular suffix
+// angularSuffix * with bob
+
+
