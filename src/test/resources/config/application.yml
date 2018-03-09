@@ -26,7 +26,7 @@ spring:
     jackson:
         serialization.write_dates_as_timestamps: false
     cache:
-        type: none
+        type: simple
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
         url: jdbc:h2:mem:sms;DB_CLOSE_DELAY=-1
@@ -91,7 +91,7 @@ jhipster:
     security:
         authentication:
             jwt:
-                secret: 69c999ebfe22fa154a8d2a948549636d526384c9
+                secret: d4dc89d47ae2f0ac99f58a8c92873c8a45e5ca70
                 # Token is valid 24 hours
                 token-validity-in-seconds: 86400
         client-authorization:

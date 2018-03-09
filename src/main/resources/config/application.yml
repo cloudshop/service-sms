@@ -53,16 +53,13 @@ feign:
 hystrix:
     share-security-context: true
 
-logging:
-    level:
-        ROOT: #logback.loglevel#
-        com.eyun.cloud: #logback.loglevel#
-        io.github.jhipster: #logback.loglevel#
-
 management:
     security:
         roles: ADMIN
     context-path: /management
+    info:
+        git:
+            mode: full
     health:
         mail:
             enabled: false # When using the MailService, configure an SMTP server and set this to true
@@ -115,9 +112,9 @@ jhipster:
     # By default CORS is disabled. Uncomment to enable.
     #cors:
         #allowed-origins: "*"
-        #allowed-methods: GET, PUT, POST, DELETE, OPTIONS
+        #allowed-methods: "*"
         #allowed-headers: "*"
-        #exposed-headers:
+        #exposed-headers: "Authorization,Link,X-Total-Count"
         #allow-credentials: true
         #max-age: 1800
     mail:

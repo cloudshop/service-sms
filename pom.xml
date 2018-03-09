@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.eyun.cloud</groupId>
+    <groupId>com.cloud.sms</groupId>
     <artifactId>sms</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
@@ -13,7 +13,7 @@
         <maven.version>3.0.0</maven.version>
         <java.version>1.8</java.version>
         <scala.version>2.12.1</scala.version>
-        <node.version>v8.9.1</node.version>
+        <node.version>v8.9.4</node.version>
         <yarn.version>v1.3.2</yarn.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -29,13 +29,13 @@
         <profile.swagger />
 
         <!-- Dependency versions -->
-        <jhipster-dependencies.version>0.1.0</jhipster-dependencies.version>
+        <jhipster-dependencies.version>0.1.8</jhipster-dependencies.version>
         <!-- The spring-boot version should match the one managed by
         https://mvnrepository.com/artifact/io.github.jhipster/jhipster-dependencies/${jhipster-dependencies.version} -->
-        <spring-boot.version>1.5.7.RELEASE</spring-boot.version>
+        <spring-boot.version>1.5.10.RELEASE</spring-boot.version>
         <!-- The hibernate version should match the one managed by
         https://mvnrepository.com/artifact/io.github.jhipster/jhipster-dependencies/${jhipster-dependencies.version} -->
-        <hibernate.version>5.2.10.Final</hibernate.version>
+        <hibernate.version>5.2.12.Final</hibernate.version>
         <!-- The javassist version should match the one managed by
         https://mvnrepository.com/artifact/org.hibernate/hibernate-core/${hibernate.version} -->
         <javassist.version>3.20.0-GA</javassist.version>
@@ -44,7 +44,7 @@
         <liquibase.version>3.5.3</liquibase.version>
         <liquibase-hibernate5.version>3.6</liquibase-hibernate5.version>
         <validation-api.version>1.1.0.Final</validation-api.version>
-        <mapstruct.version>1.1.0.Final</mapstruct.version>
+        <mapstruct.version>1.2.0.Final</mapstruct.version>
 
         <!-- Plugin versions -->
         <maven-clean-plugin.version>2.6.1</maven-clean-plugin.version>
@@ -60,7 +60,7 @@
         <sonar-maven-plugin.version>3.2</sonar-maven-plugin.version>
 
         <!-- Sonar properties -->
-        <sonar.exclusions>src/main/webapp/content/**/*.*, src/main/webapp/i18n/*.js, target/www/**/*.*, src/main/webapp/app/app.main-aot.ts</sonar.exclusions>
+        <sonar.exclusions>src/main/webapp/content/**/*.*, src/main/webapp/i18n/*.js, target/www/**/*.*</sonar.exclusions>
         <sonar.issue.ignore.multicriteria>S3437,UndocumentedApi,BoldAndItalicTagsCheck</sonar.issue.ignore.multicriteria>
         <!-- Rule https://sonarqube.com/coding_rules#rule_key=Web%3ABoldAndItalicTagsCheck is ignored. Even if we agree that using the "i" tag is an awful practice, this is what is recommended by http://fontawesome.io/examples/ -->
         <sonar.issue.ignore.multicriteria.BoldAndItalicTagsCheck.resourceKey>src/main/webapp/app/**/*.*</sonar.issue.ignore.multicriteria.BoldAndItalicTagsCheck.resourceKey>
@@ -97,6 +97,10 @@
     </dependencyManagement>
 
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
         <dependency>
             <groupId>io.github.jhipster</groupId>
             <artifactId>jhipster</artifactId>
@@ -436,16 +440,14 @@
                                     <directory>src/main/resources/</directory>
                                     <filtering>true</filtering>
                                     <includes>
-                                        <include>**/*.xml</include>
-                                        <include>**/*.yml</include>
+                                        <include>config/*.yml</include>
                                     </includes>
                                 </resource>
                                 <resource>
                                     <directory>src/main/resources/</directory>
                                     <filtering>false</filtering>
                                     <excludes>
-                                        <exclude>**/*.xml</exclude>
-                                        <exclude>**/*.yml</exclude>
+                                        <exclude>config/*.yml</exclude>
                                     </excludes>
                                 </resource>
                             </resources>
@@ -527,7 +529,7 @@
                     <defaultSchemaName>sms</defaultSchemaName>
                     <username>root</username>
                     <password></password>
-                    <referenceUrl>hibernate:spring:com.eyun.cloud.domain?dialect=org.hibernate.dialect.MySQL5InnoDBDialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>
+                    <referenceUrl>hibernate:spring:com.cloud.sms.domain?dialect=org.hibernate.dialect.MySQL5InnoDBDialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>
                     <verbose>true</verbose>
                     <logging>debug</logging>
                 </configuration>
@@ -679,8 +681,6 @@
                 </plugins>
             </build>
             <properties>
-                <!-- log configuration -->
-                <logback.loglevel>DEBUG</logback.loglevel>
                 <!-- default Spring profiles -->
                 <spring.profiles.active>dev${profile.no-liquibase}</spring.profiles.active>
             </properties>
@@ -730,11 +730,30 @@
                             </execution>
                         </executions>
                     </plugin>
+                    <plugin>
+                        <groupId>pl.project13.maven</groupId>
+                        <artifactId>git-commit-id-plugin</artifactId>
+                        <version>2.2.4</version>
+                            <executions>
+                                <execution>
+                                    <goals>
+                                        <goal>revision</goal>
+                                    </goals>
+                                </execution>
+                            </executions>
+                            <configuration>
+                                <failOnNoGitDirectory>false</failOnNoGitDirectory>
+                                <generateGitPropertiesFile>true</generateGitPropertiesFile>
+                                <includeOnlyProperties>
+                                    <includeOnlyProperty>^git.commit.id.abbrev$</includeOnlyProperty>
+                                    <includeOnlyProperty>^git.commit.id.describe$</includeOnlyProperty>
+                                    <includeOnlyProperty>^git.branch$</includeOnlyProperty>
+                                </includeOnlyProperties>
+                        </configuration>
+                    </plugin>
                 </plugins>
             </build>
             <properties>
-                <!-- log configuration -->
-                <logback.loglevel>INFO</logback.loglevel>
                 <!-- default Spring profiles -->
                 <spring.profiles.active>prod${profile.swagger}${profile.no-liquibase}</spring.profiles.active>
             </properties>
@@ -833,8 +852,6 @@
                 </plugins>
             </build>
             <properties>
-                <!-- log configuration -->
-                <logback.loglevel>DEBUG</logback.loglevel>
                 <!-- default Spring profiles -->
                 <spring.profiles.active>dev,swagger</spring.profiles.active>
             </properties>
@@ -898,5 +915,6 @@
                 </dependency>
             </dependencies>
         </profile>
+        <!-- jhipster-needle-maven-add-profile -->
     </profiles>
 </project>

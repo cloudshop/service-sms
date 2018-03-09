@@ -13,6 +13,12 @@
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
 
+logging:
+    level:
+        ROOT: DEBUG
+        com.cloud.sms: DEBUG
+        io.github.jhipster: DEBUG
+
 eureka:
     instance:
         prefer-ip-address: true
@@ -35,7 +41,7 @@ spring:
         type: com.zaxxer.hikari.HikariDataSource
         url: jdbc:mysql://localhost:3306/sms?useUnicode=true&characterEncoding=utf8&useSSL=false
         username: root
-        password:
+        password: z7eh9n6tvk1fPUB8
         hikari:
             data-source-properties:
                 cachePrepStmts: true
@@ -92,7 +98,7 @@ liquibase:
 #        key-alias: sms
 # ===================================================================
 server:
-    port: 9010
+    port: 8081
 
 # ===================================================================
 # JHipster specific properties
@@ -107,13 +113,17 @@ jhipster:
         hazelcast: # Hazelcast distributed cache
             time-to-live-seconds: 3600
             backup-count: 1
+            management-center: # Full reference is available at: http://docs.hazelcast.org/docs/management-center/3.9/manual/html/Deploying_and_Starting.html
+                enabled: false
+                update-interval: 3
+                url: http://localhost:8180/mancenter
     # CORS is disabled by default on microservices, as you should access them through a gateway.
     # If you want to enable it, please uncomment the configuration below.
     # cors:
         # allowed-origins: "*"
         # allowed-methods: "*"
         # allowed-headers: "*"
-        # exposed-headers: "Authorization"
+        # exposed-headers: "Authorization,Link,X-Total-Count"
         # allow-credentials: true
         # max-age: 1800
     security:
@@ -124,7 +134,7 @@ jhipster:
             client-secret: internal
     mail: # specific JHipster mail property, for standard properties see MailProperties
         from: sms@localhost
-        base-url: http://127.0.0.1:9010
+        base-url: http://127.0.0.1:8081
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx.enabled: true
         graphite: # Use the "graphite" Maven profile to have the Graphite dependencies

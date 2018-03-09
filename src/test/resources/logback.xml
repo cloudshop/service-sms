@@ -3,7 +3,7 @@
 <configuration scan="true">
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
-    <logger name="com.eyun.cloud" level="INFO"/>
+    <logger name="com.cloud.sms" level="INFO"/>
 
     <logger name="io.github.jhipster" level="WARN"/>
 
