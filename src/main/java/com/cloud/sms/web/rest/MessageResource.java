@@ -5,8 +5,10 @@ import com.cloud.sms.service.MessageService;
 import com.cloud.sms.web.rest.errors.BadRequestAlertException;
 import com.cloud.sms.web.rest.util.HeaderUtil;
 import com.cloud.sms.web.rest.util.PaginationUtil;
+import com.cloud.sms.web.rest.util.ShortMessageUtil;
 import com.cloud.sms.service.dto.MessageDTO;
 import com.cloud.sms.service.dto.MessageCriteria;
+import com.alibaba.fastjson.JSONObject;
 import com.cloud.sms.service.MessageQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -20,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,6 +57,15 @@ public class MessageResource {
     @Timed
     public ResponseEntity<MessageDTO> createMessage(@RequestBody MessageDTO messageDTO) throws URISyntaxException {
         log.debug("REST request to save Message : {}", messageDTO);
+        String resp = ShortMessageUtil.sendMessage(messageDTO.getContent(), messageDTO.getTarget());//发送短信
+        JSONObject jo = JSONObject.parseObject(resp);
+        int ReqCode = jo.getIntValue("ReqCode");
+        if (ReqCode == 0) {//发送成功
+        	messageDTO.setSentTime(Instant.now());
+        	messageDTO.setRetries(0);
+        } else {
+        	messageDTO.setRetries(messageDTO.getRetries() + 1);
+        }
         if (messageDTO.getId() != null) {
             throw new BadRequestAlertException("A new message cannot already have an ID", ENTITY_NAME, "idexists");
         }
