@@ -19,12 +19,6 @@ node {
             sh "./mvnw -DskipTests -Pprod package"
         }
 
-        stage('quality analysis') {
-            withSonarQubeEnv('Sonar') {
-                sh "./mvnw sonar:sonar"
-            }
-        }
-
         def dockerImage
         stage('build docker') {
             sh "cp -R src/main/docker target/"
