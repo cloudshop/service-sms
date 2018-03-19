@@ -15,19 +15,8 @@ node {
             sh "./mvnw clean"
         }
 
-        stage('backend tests') {
-            try {
-                sh "./mvnw test"
-            } catch(err) {
-                throw err
-            } finally {
-                junit '**/target/surefire-reports/TEST-*.xml'
-            }
-        }
-
         stage('package and deploy') {
-            sh "./mvnw com.heroku.sdk:heroku-maven-plugin:1.1.1:deploy -DskipTests -Pprod -Dheroku.appName="
-            archiveArtifacts artifacts: '**/target/*.war', fingerprint: true
+            sh "./mvnw -DskipTests -Pprod package"
         }
 
         stage('quality analysis') {
