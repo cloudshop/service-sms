@@ -5,7 +5,6 @@ node {
         checkout scm
     }
 
-    gitlabCommitStatus('build') {
         stage('check java') {
             sh "java -version"
         }
@@ -31,5 +30,4 @@ node {
                 dockerImage.push 'latest'
             }
         }
-    }
 }
