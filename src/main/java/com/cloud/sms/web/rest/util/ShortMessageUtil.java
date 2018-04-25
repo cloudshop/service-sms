@@ -10,8 +10,6 @@ import java.net.URL;
 import java.security.MessageDigest;
 import java.util.Map;
 
-import org.junit.Test;
-
 //乐讯数据短信工具类
 public class ShortMessageUtil {
 	
