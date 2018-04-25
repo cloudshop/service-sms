@@ -10,6 +10,8 @@ import java.net.URL;
 import java.security.MessageDigest;
 import java.util.Map;
 
+import org.junit.Test;
+
 //乐讯数据短信工具类
 public class ShortMessageUtil {
 	
@@ -20,10 +22,10 @@ public class ShortMessageUtil {
 		String mttime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 		System.out.print(mttime);
 		Map<String,String> param = new HashMap<String,String>();
-		param.put("name","yxcs09");
-		param.put("pwd", ShortMessageUtil.MD51("33ce5d90a5446328efe01f49c1e76866" + mttime));
+		param.put("name","lxsjkj");
+		param.put("pwd", ShortMessageUtil.MD51("de5fb6019f3913ba01c9acffeceaaa14" + mttime));
 		try {
-			param.put("content", content);
+			param.put("content", "【贡融积分】"+content);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
